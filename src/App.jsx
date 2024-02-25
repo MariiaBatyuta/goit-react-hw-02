@@ -20,15 +20,25 @@ function App() {
     }
   });
   
-  const updateFeedback = feedbackType => {
+  const updateFeedback = (feedbackType, buttonInfo) => {
     setClicks(clicks => ({
       ...clicks,
       [feedbackType]: clicks[feedbackType] + 1,
     }));
+    
+    let currentButtonInfo = JSON.parse(window.localStorage.getItem('buttonsClickInfo'));
+
+    if (!currentButtonInfo) {
+      currentButtonInfo = [];
+    }
+
+    currentButtonInfo.push(buttonInfo);
+    window.localStorage.setItem('buttonsClickInfo', JSON.stringify(currentButtonInfo));
   };
 
   const resetFeedback = () => {
     setClicks({ good: 0, neutral: 0, bad: 0 });
+    window.localStorage.clear();
   }; 
 
   useEffect(() => {
@@ -42,10 +52,10 @@ function App() {
   return (
     <div>
       <Description header={headerTitle} description={descriptionText}></Description>
-      <Options onUpdate={() => { updateFeedback("good")}}>Good</Options>
-      <Options onUpdate={() => { updateFeedback("neutral")}}>Neutral</Options>
-      <Options onUpdate={() => { updateFeedback("bad") }}>Bad</Options>
-      <Options onUpdate={resetFeedback}>Reset</Options>
+      <Options onUpdate={() => { updateFeedback("good", "Good")}}>Good</Options>
+      <Options onUpdate={() => { updateFeedback("neutral", "Neutral")}}>Neutral</Options>
+      <Options onUpdate={() => { updateFeedback("bad", "Bad") }}>Bad</Options>
+      {totalFeedback > 0 && <Options onUpdate={resetFeedback}>Reset</Options>}
 
       {totalFeedback === 0 ? <Notification /> : (
         <>
