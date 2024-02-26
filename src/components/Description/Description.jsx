@@ -1,4 +1,4 @@
-export default function Description({header, description}) {
+export default function Description({header = 'Title', description = 'Description'}) {
     return (
         <>
             <h1>{header}</h1>

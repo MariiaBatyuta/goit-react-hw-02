@@ -1,5 +1,5 @@
-export default function Notification() {
+export default function Notification({message}) {
     return (
-        < p > Not feedback yet.</p>
+        < p >{message}</p>
     )
 }
